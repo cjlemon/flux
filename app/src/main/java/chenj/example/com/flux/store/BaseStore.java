@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import chenj.example.com.flux.IDataChangedListener;
+import chenj.example.com.flux.annotation.StoreLabel;
 import chenj.example.com.flux.action.BaseAction;
 
 /**
@@ -18,6 +19,14 @@ public abstract class BaseStore {
 
     public BaseStore(){
         mActionLabels = new LinkedList<>();
+        StoreLabel labelAnnotation = getClass().getAnnotation(StoreLabel.class);
+        if (labelAnnotation == null){
+            return;
+        }
+        String[] labels = labelAnnotation.labels();
+        for (String label : labels) {
+            addLabel(label);
+        }
     }
 
     public void setDataChangedListener(IDataChangedListener listener){

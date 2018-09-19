@@ -1,5 +1,7 @@
 package chenj.example.com.flux.action;
 
+import chenj.example.com.flux.annotation.ActionLabel;
+
 /**
  * @author chenjun
  * create at 2018/6/24
@@ -15,14 +17,22 @@ public class BaseAction<T> {
 
     private T t;
 
-    public BaseAction(String label, T t){
-        this.mLabel = label;
+    public BaseAction(T t){
+        this.mLabel = getAnnotationLabel();
         setT(t);
     }
 
-    public BaseAction(String label, Exception e){
-        this.mLabel = label;
+    public BaseAction(Exception e){
+        this.mLabel = getAnnotationLabel();
         setException(e);
+    }
+
+    private String getAnnotationLabel(){
+        ActionLabel annotation = getClass().getAnnotation(ActionLabel.class);
+        if (annotation == null){
+            throw new IllegalStateException("action缺少ActionLabel注解");
+        }
+        return annotation.label();
     }
 
     public String getLabel() {

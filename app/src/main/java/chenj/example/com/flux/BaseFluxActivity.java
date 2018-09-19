@@ -25,8 +25,6 @@ public abstract class BaseFluxActivity<S extends BaseStore> extends AppCompatAct
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         initStore(savedInstanceState == null ? extras : savedInstanceState);
-
-
     }
 
     @Override
@@ -54,27 +52,11 @@ public abstract class BaseFluxActivity<S extends BaseStore> extends AppCompatAct
     }
 
     @Override
-    public void onDataChanged(String label) {
-        dataChanged(label);
-    }
-
-    /**
-     * 数据发生改变
-     *
-     * @param label 相对应标签
-     */
-    public abstract void dataChanged(String label);
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (unregisterInBackground()) {
             mDispatcher.register(mStore);
         }
-    }
-
-    protected boolean showLoadingDialog(){
-        return true;
     }
 
     @Override
